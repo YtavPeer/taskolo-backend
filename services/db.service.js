@@ -6,6 +6,8 @@ module.exports = {
     getCollection
 }
 
+// const URL = "mongodb+srv://taskolo-admin:<password>@cluster0.dnicy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+
 // Database Name
 const dbName = 'taskolo_DB'
 
