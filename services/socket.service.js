@@ -1,5 +1,6 @@
 
 
+const { updateBoard } = require('../api/board/board.controller');
 const asyncLocalStorage = require('./als.service');
 const logger = require('./logger.service');
 
@@ -25,25 +26,24 @@ function connectSockets(http, session) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
-        socket.on('chat topic', topic => {
-            if (socket.myTopic === topic) return;
-            if (socket.myTopic) {
-                socket.leave(socket.myTopic)
+        socket.on('board', board => {
+            if (socket.board === board) return;
+            if (socket.board) {
+                socket.leave(socket.board)
             }
-            socket.join(topic)
-            // logger.debug('Session ID is', socket.handshake.sessionID)
-            socket.myTopic = topic
+            socket.join(board)
+            logger.debug('Session ID is', socket.handshake.sessionID)
+            socket.board = board
         })
-        socket.on('chat newMsg', msg => {
+        socket.on('board newUpdate', updateType => {
             // emits to all sockets:
             // gIo.emit('chat addMsg', msg)
             // emits only to sockets in the same room
-            gIo.to(socket.myTopic).emit('chat addMsg', msg)
+            gIo.to(socket.board).emit('board addUpdate', updateType)
         })
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
-
     })
 }
 
