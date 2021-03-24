@@ -1,5 +1,3 @@
-
-
 const { updateBoard } = require('../api/board/board.controller');
 const asyncLocalStorage = require('./als.service');
 const logger = require('./logger.service');
@@ -27,6 +25,7 @@ function connectSockets(http, session) {
             }
         })
         socket.on('board', board => {
+            console.log('connect to board socket...')
             if (socket.board === board) return;
             if (socket.board) {
                 socket.leave(socket.board)
@@ -35,11 +34,12 @@ function connectSockets(http, session) {
             logger.debug('Session ID is', socket.handshake.sessionID)
             socket.board = board
         })
-        socket.on('board newUpdate', updateType => {
+        socket.on('board newUpdate', board => {
             // emits to all sockets:
             // gIo.emit('chat addMsg', msg)
             // emits only to sockets in the same room
-            gIo.to(socket.board).emit('board addUpdate', updateType)
+            console.log('new update...board:')
+            gIo.to(socket.board).emit('board addUpdate', board) //only board socket
         })
         socket.on('user-watch', userId => {
             socket.join(userId)
