@@ -1,9 +1,11 @@
-const { updateBoard } = require('../api/board/board.controller');
 const asyncLocalStorage = require('./als.service');
 const logger = require('./logger.service');
 
 var gIo = null
 var gSocketBySessionIdMap = {}
+
+
+
 
 function connectSockets(http, session) {
     gIo = require('socket.io')(http);
@@ -24,23 +26,18 @@ function connectSockets(http, session) {
                 gSocketBySessionIdMap[socket.handshake.sessionID] = null
             }
         })
-        socket.on('board', board => {
+        socket.on('board-watch', boardId => {
+            boardId = boardId.toString();
             console.log('connect to board socket...')
-            if (socket.board === board) return;
-            if (socket.board) {
-                socket.leave(socket.board)
+            if (socket.boardId === boardId) return;
+            if (socket.boardId) {
+                socket.leave(socket.boardId)
             }
-            socket.join(board)
+            socket.join(boardId)
             logger.debug('Session ID is', socket.handshake.sessionID)
-            socket.board = board
+            socket.boardId = boardId
         })
-        socket.on('board newUpdate', board => {
-            // emits to all sockets:
-            // gIo.emit('chat addMsg', msg)
-            // emits only to sockets in the same room
-            console.log('new update...board:')
-            gIo.to(socket.board).emit('board addUpdate', board) //only board socket
-        })
+        
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
@@ -57,7 +54,6 @@ function emitToUser({ type, data, userId }) {
     gIo.to(userId).emit(type, data)
 }
 
-
 // Send to all sockets BUT not the current socket 
 function broadcast({ type, data, room = null }) {
     const store = asyncLocalStorage.getStore()
@@ -73,8 +69,7 @@ function broadcast({ type, data, room = null }) {
 module.exports = {
     connectSockets,
     emitToAll,
-    broadcast,
+    broadcast
 }
-
 
 
