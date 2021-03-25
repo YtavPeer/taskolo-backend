@@ -39,6 +39,7 @@ app.all('*', setupAsyncLocalStorage)
 // TODO: check with app.use
 app.get('/api/setup-session', (req, res) =>{
     req.session.connectedAt = Date.now()
+    // console.log('setup-session:', req.sessionID);
     res.end()
 })
 
@@ -61,7 +62,7 @@ http.listen(port, () => {
     logger.info('Server is running on port: ' + port)
 })
 
-console.log('I am Here!, am I?')
+// console.log('I am Here!, am I?')
 
 
 
