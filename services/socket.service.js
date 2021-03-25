@@ -8,15 +8,26 @@ var gSocketBySessionIdMap = {}
 
 
 function connectSockets(http, session) {
-    gIo = require('socket.io')(http);
+
+    gIo = require('socket.io')(http, {
+        cors: {
+            origin: ['http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3000', 'http://localhost:3000'],
+            credentials: true,
+            methods: ['GET', 'PUT', 'POST', 'DELETE']
+        }
+    });
+
+
+
 
     const sharedSession = require('express-socket.io-session');
 
     gIo.use(sharedSession(session, {
         autoSave: true
     }));
+    
     gIo.on('connection', socket => {
-        // console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
+        console.log('New socket - socket.handshake.sessionID', socket.handshake.sessionID)
         gSocketBySessionIdMap[socket.handshake.sessionID] = socket
         // console.log('gSocketBySessionIdMap', Object.keys(gSocketBySessionIdMap))
         // TODO: emitToUser feature - need to tested for CaJan21
@@ -38,7 +49,7 @@ function connectSockets(http, session) {
             logger.debug('Session ID is', socket.handshake.sessionID)
             socket.boardId = boardId
         })
-        
+
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
