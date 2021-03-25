@@ -17,12 +17,12 @@ async function getBoards(req, res) {
 
 async function getBoardById(req, res) {
       try {
-            console.log('controller got req params,', req.params)
+            // console.log('controller got req params,', req.params)
             const { id } = req.params
             // const { boardId } = req.params
-            console.log('controller got board id,', id)
+            // console.log('controller got board id,', id)
             board = await boardService.getById(id)
-            console.log('controller got board,', board)
+            // console.log('controller got board,', board)
             res.json(board)
       } catch (error) {
             logger.error('Cannot get board', err)
@@ -56,6 +56,7 @@ async function updateBoard(req, res) {
       try {
             const board = req.body
             const updatedBoard = await boardService.update(board)
+            console.log('updatedBoard')
             socketService.broadcast({ type: 'board-update', data: updatedBoard, room: updatedBoard._id })
             res.json(updatedBoard)
       } catch (err) {

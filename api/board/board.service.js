@@ -86,7 +86,7 @@ async function update(board) {
             board._id = ObjectId(board._id)
             const collection = await dbService.getCollection('board')
             await collection.updateOne({ '_id': board._id }, { $set: board })
-            console.log('updating board...')
+            // console.log('updating board...')
             return board;
       } catch (error) {
             logger.error(`cannot update board ${board._id}`, err)
