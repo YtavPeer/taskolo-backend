@@ -5,8 +5,6 @@ var gIo = null
 var gSocketBySessionIdMap = {}
 
 
-
-
 function connectSockets(http, session) {
 
     gIo = require('socket.io')(http, {
@@ -70,6 +68,7 @@ function emitToUser({ type, data, userId }) {
 function broadcast({ type, data, room = null }) {
     const store = asyncLocalStorage.getStore()
     const { sessionId } = store
+    console.log('session id in broadcast func', sessionId)
     if (!sessionId) return logger.debug('Shoudnt happen, no sessionId in asyncLocalStorage store')
     const excludedSocket = gSocketBySessionIdMap[sessionId]
     console.log('excludedSocket', gSocketBySessionIdMap[sessionId])
@@ -86,4 +85,4 @@ module.exports = {
     broadcast
 }
 
-2
+
