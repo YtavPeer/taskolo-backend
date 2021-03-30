@@ -11,6 +11,7 @@ async function login(req, res) {
         logger.error('Failed to Login ' + err)
         res.status(401).send({ err: 'Failed to Login' })
     }
+    
 }
 
 async function signup(req, res) {
