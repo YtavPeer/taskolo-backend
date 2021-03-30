@@ -48,6 +48,18 @@ function connectSockets(http, session) {
             socket.boardId = boardId
         })
 
+        socket.on('task-watch', taskId => {
+            // boardId = boardId.toString();
+            console.log('connect to board socket...')
+            if (socket.taskId === taskId) return;
+            if (socket.taskId) {
+                socket.leave(socket.taskId)
+            }
+            socket.join(boardtaskIdId)
+            logger.debug('Session ID is', socket.handshake.sessionID)
+            socket.boardtaskIdd = taskId
+        })
+
         socket.on('user-watch', userId => {
             socket.join(userId)
         })
