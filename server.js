@@ -13,7 +13,7 @@ const session = expressSession({
     cookie: { secure: false }
 })
 // Express App Config
-app.use(express.json({'limit': '70mb'}))
+app.use(express.json({'limit': '20mb'}))
 app.use(session)
 
 if (process.env.NODE_ENV === 'production') {
