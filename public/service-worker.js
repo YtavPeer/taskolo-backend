@@ -1,6 +1,6 @@
 /**
  * Welcome to your Workbox-powered service worker!
- *
+ *git 
  * You'll need to register this file in your web app and you should
  * disable HTTP caching for this file too.
  * See https://goo.gl/nhQhGp
@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.29e643d04d572001917aa85e71af73d2.js"
+  "/precache-manifest.401eaedbc5288a684347037ca75d9d52.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "frontend"});

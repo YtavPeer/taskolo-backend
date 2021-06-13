@@ -83,8 +83,8 @@ function broadcast({ type, data, room = null }) {
     console.log('session id in broadcast func', sessionId)
     if (!sessionId) return logger.debug('Shoudnt happen, no sessionId in asyncLocalStorage store')
     const excludedSocket = gSocketBySessionIdMap[sessionId]
-    console.log('excludedSocket', gSocketBySessionIdMap[sessionId])
-    console.log('Socket Map:', Object.keys(gSocketBySessionIdMap), 'sessionId:', sessionId)
+    // console.log('excludedSocket', gSocketBySessionIdMap[sessionId])
+    // console.log('Socket Map:', Object.keys(gSocketBySessionIdMap), 'sessionId:', sessionId)
     if (!excludedSocket) return logger.debug('Shouldnt happen, No socket in map')
     if (room) excludedSocket.broadcast.to(room).emit(type, data)
     else excludedSocket.broadcast.emit(type, data)

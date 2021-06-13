@@ -2,9 +2,12 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const expressSession = require('express-session')
+const passport = require('passport')
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 
 const app = express()
 const http = require('http').createServer(app)
+
 
 const session = expressSession({
     secret: 'coding is amazing',
@@ -13,8 +16,8 @@ const session = expressSession({
     cookie: { secure: false }
 })
 // Express App Config
-app.use(express.json({'limit': '500mb'}))
-app.use(session)
+app.use(express.json({'limit': '20mb'}))
+// app.use(session)
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.resolve(__dirname, 'public')))
@@ -25,6 +28,12 @@ if (process.env.NODE_ENV === 'production') {
     }
     app.use(cors(corsOptions))
 }
+
+
+
+
+
+
 
 const authRoutes = require('./api/auth/auth.routes')
 const userRoutes = require('./api/user/user.routes')
@@ -38,6 +47,7 @@ app.all('*', setupAsyncLocalStorage)
 
 // TODO: check with app.use
 app.get('/api/setup-session', (req, res) =>{
+    console.log('****req****', req.session);
     req.session.connectedAt = Date.now()
     // console.log('setup-session:', req.sessionID);
     res.end()
