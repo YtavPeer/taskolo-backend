@@ -2,8 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const expressSession = require('express-session')
-const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth20').Strategy
+// const passport = require('passport')
+// const GoogleStrategy = require('passport-google-oauth20').Strategy
 
 const app = express()
 const http = require('http').createServer(app)
@@ -47,8 +47,8 @@ app.all('*', setupAsyncLocalStorage)
 
 // TODO: check with app.use
 app.get('/api/setup-session', (req, res) =>{
-    console.log('****req****', req.session);
-    req.session.connectedAt = Date.now()
+    // console.log('****req****', req.session);
+    // req.session.connectedAt = Date.now()
     // console.log('setup-session:', req.sessionID);
     res.end()
 })
